@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://ckiepfbqcsnho"]
+
+[ext_resource type="Script" uid="uid://cj8eof7j4abm0" path="res://scenes/state_bar/state_bar.gd" id="1_maycs"]
+
+[node name="StateBar" type="Node" unique_id=1931017460]
+script = ExtResource("1_maycs")

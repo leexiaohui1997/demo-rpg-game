@@ -1,0 +1,11 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+
+.DS_Store
+.workbuddy/
+
+# Godot: ignore all asset resource files, but keep .import metadata
+assets/**
+!assets/**/
+!assets/**/*.import
