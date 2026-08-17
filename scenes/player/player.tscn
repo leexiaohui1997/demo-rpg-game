@@ -4,11 +4,29 @@
 [ext_resource type="Script" uid="uid://bqlj4c48lfrrs" path="res://scenes/player/player.gd" id="1_lvxji"]
 [ext_resource type="Texture2D" uid="uid://cc0q6egjxfobw" path="res://assets/Sprites/Actor/Characters/Boy/SeparateAnim/Idle.png" id="2_dovo2"]
 [ext_resource type="Texture2D" uid="uid://bacld8ysircpa" path="res://assets/Sprites/Actor/Characters/Boy/SeparateAnim/Walk.png" id="3_gmlin"]
+[ext_resource type="Texture2D" uid="uid://cif5jmjk1clyv" path="res://assets/Sprites/Actor/Characters/Boy/SeparateAnim/Attack.png" id="3_h17s1"]
 [ext_resource type="PackedScene" uid="uid://ckiepfbqcsnho" path="res://scenes/state_bar/state_bar.tscn" id="5_5gtgg"]
 [ext_resource type="Script" uid="uid://dgmbg3l470svp" path="res://scripts/fsm.gd" id="5_p47bc"]
+[ext_resource type="Texture2D" uid="uid://3p8iooj1mo5j" path="res://assets/Sprites/Items/Weapons/Lance/Sprite.png" id="6_je7p5"]
 [ext_resource type="Script" uid="uid://bufd4ash7gtxj" path="res://scenes/player/states/player_state_idle.gd" id="6_qek5x"]
 [ext_resource type="Script" uid="uid://ctrf8k41qihr7" path="res://scenes/player/states/player_state_walk.gd" id="7_5gtgg"]
 [ext_resource type="Script" uid="uid://b8cl8kx6kgxbl" path="res://scenes/player/states/player_state_attack.gd" id="8_h17s1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ioxgp"]
+atlas = ExtResource("3_h17s1")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cnsyf"]
+atlas = ExtResource("3_h17s1")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_007i1"]
+atlas = ExtResource("3_h17s1")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6cv16"]
+atlas = ExtResource("3_h17s1")
+region = Rect2(16, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_gmlin"]
 atlas = ExtResource("2_dovo2")
@@ -92,6 +110,38 @@ region = Rect2(16, 48, 16, 16)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_8afob"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ioxgp")
+}],
+"loop": 0,
+"name": &"attack_down",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cnsyf")
+}],
+"loop": 0,
+"name": &"attack_left",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_007i1")
+}],
+"loop": 0,
+"name": &"attack_right",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6cv16")
+}],
+"loop": 0,
+"name": &"attack_up",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_gmlin")
@@ -196,7 +246,12 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_bslxb"]
 radius = 7.0
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_33sww"]
+size = Vector2(5.5, 15.5)
+
 [node name="Player" type="CharacterBody2D" unique_id=400856913]
+collision_layer = 2
+collision_mask = 0
 script = ExtResource("1_lvxji")
 
 [node name="ShadowSprite2D" type="Sprite2D" parent="." unique_id=298586545]
@@ -207,7 +262,7 @@ texture = ExtResource("1_8afob")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=846070919]
 position = Vector2(0, -8)
 sprite_frames = SubResource("SpriteFrames_8afob")
-animation = &"idle_down"
+animation = &"attack_left"
 autoplay = "idle_down"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2019844887]
@@ -216,6 +271,38 @@ shape = SubResource("CircleShape2D_bslxb")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=202211707]
 zoom = Vector2(4, 4)
+
+[node name="Weapon" type="Node2D" parent="." unique_id=202436543]
+visible = false
+position = Vector2(-18, -13)
+
+[node name="WeaponSprite2D" type="Sprite2D" parent="Weapon" unique_id=1044105367]
+position = Vector2(-0.5, -12)
+texture = ExtResource("6_je7p5")
+flip_h = true
+
+[node name="WeaponAttackArea" type="Area2D" parent="Weapon" unique_id=1535091228]
+collision_layer = 0
+collision_mask = 4
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Weapon/WeaponAttackArea" unique_id=1832170317]
+position = Vector2(-0.5, -15.5)
+shape = SubResource("RectangleShape2D_33sww")
+
+[node name="AttackPos" type="Node2D" parent="." unique_id=1723872694]
+
+[node name="Down" type="Marker2D" parent="AttackPos" unique_id=631184229]
+position = Vector2(-2, 0.5)
+
+[node name="Left" type="Marker2D" parent="AttackPos" unique_id=1979370878]
+position = Vector2(-8.5, -5)
+
+[node name="Right" type="Marker2D" parent="AttackPos" unique_id=1275244830]
+position = Vector2(9, -4)
+
+[node name="Up" type="Marker2D" parent="AttackPos" unique_id=1462930894]
+position = Vector2(-3, -17)
 
 [node name="HpBar" parent="." unique_id=1931017460 instance=ExtResource("5_5gtgg")]
 
